@@ -2683,6 +2683,7 @@ main(int argc, char *argv[])
     char *s;
   } tests[] = {
     {execout, "execout"},
+    {kernmem, "kernmem"},
     {copyin, "copyin"},
     {copyout, "copyout"},
     {copyinstr1, "copyinstr1"},
@@ -2717,7 +2718,6 @@ main(int argc, char *argv[])
     {bsstest, "bsstest"},
     {sbrkbasic, "sbrkbasic"},
     {sbrkmuch, "sbrkmuch"},
-    {kernmem, "kernmem"},
     {sbrkfail, "sbrkfail"},
     {sbrkarg, "sbrkarg"},
     {validatetest, "validatetest"},
