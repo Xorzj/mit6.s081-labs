@@ -21,3 +21,8 @@ xv6.out*
 submissions/
 ph
 barrier
+grade-lab-lock
+mkfs/mkfs
+.vscode/settings.json
+grade-lab-lock
+gradelib.py
