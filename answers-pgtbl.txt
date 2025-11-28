@@ -1,0 +1,2 @@
+== Test answers-pgtbl.txt == answers-pgtbl.txt: FAIL
+    answers-pgtbl.txt does not seem to contain enough text
