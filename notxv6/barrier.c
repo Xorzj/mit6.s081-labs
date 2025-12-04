@@ -28,10 +28,19 @@ static void barrier() {
   //
   pthread_mutex_lock(&bstate.barrier_mutex);
   bstate.nthread++;
+  // 1. 只有最后一个到达的线程才走 else
   if (bstate.nthread != nthread) {
-    pthread_cond_wait(&bstate.barrier_cond, &bstate.barrier_mutex);
+    // 【关键点】记录我进来时的轮次
+    int my_round = bstate.round;
+
+    // 【关键点】只要轮次没变，说明人还没齐，我就一直睡
+    // 即使发生了虚假唤醒，或者 nthread 被重置了，只要 round 没变，我就不出去
+    while (bstate.round == my_round) {
+      pthread_cond_wait(&bstate.barrier_cond, &bstate.barrier_mutex);
+    }
   } else {
-    bstate.round++;
+    // 2. 最后一个线程负责切轮次、清零、广播
+    bstate.round++;  // 轮次 +1，这会让上面 while 的条件失效，从而跳出循环
     bstate.nthread = 0;
     pthread_cond_broadcast(&bstate.barrier_cond);
   }
