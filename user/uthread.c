@@ -89,7 +89,7 @@ void thread_create(void (*func)()) {
   }
   t->state = RUNNABLE;
   t->ctx.ra = (uint64)func;
-  t->ctx.sp = (uint64)(&t->stack) + STACK_SIZE - 1;
+  t->ctx.sp = (uint64)(&t->stack) + STACK_SIZE;
   // YOUR CODE HERE
 }
 
