@@ -72,17 +72,18 @@ static struct buf* bget(uint dev, uint blockno) {
   // Recycle the least recently used (LRU) unused buffer.
   release(&bcache.bufmap_locks[Hash]);
   acquire(&bcache.lock);
+  acquire(&bcache.bufmap_locks[Hash]);
   for (b = bcache.bufmap[Hash].next; b; b = b->next) {
     if (b->dev == dev && b->blockno == blockno) {
-      acquire(&bcache.bufmap_locks[Hash]);
       b->refcnt++;
-      release(&bcache.bufmap_locks[Hash]);
 
+      release(&bcache.bufmap_locks[Hash]);
       release(&bcache.lock);
       acquiresleep(&b->lock);
       return b;
     }
   }
+  release(&bcache.bufmap_locks[Hash]);
   struct buf* lastly_no_used = 0;
   uint holding = -1;
   for (int i = 0; i < NBUFBUCKET; i++) {
